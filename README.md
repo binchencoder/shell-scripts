@@ -1,2 +1,2 @@
-# shells
+# shell-scripts
 Write own shell scripts
