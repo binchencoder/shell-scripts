@@ -62,6 +62,7 @@ Desc(){
     kubectl describe pod -n $POD_NAME
 }
 
+# 根据不同输入执行不同内容
 if [ "$ACTION" = "logs" ]; then
     Logs
 elif [ "$ACTION" = "exec" ]; then
