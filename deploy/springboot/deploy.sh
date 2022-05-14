@@ -43,7 +43,7 @@ else
 fi
 
 # 远程拷贝文件
-echo "开始拷贝文件到远程服务器($REMOTE_HOST)"
+echo "开始拷贝文件到远程服务器($REMOTE_HOST),如果未安装sshpass,需要输入宿主机密码"
 if ! [ -x "$(command -v sshpass)" ];
 then
   echo 'Error: sshpass is not installed.' >&2
@@ -57,14 +57,16 @@ fi
 
 # 登录远程机器操作命令
 echo ""
-echo "登录$REMOTE_HOST部署服务"
+echo "登录$REMOTE_HOST部署服务,如果未安装sshpass,需要再次输入宿主机密码"
 
 if ! [ -x "$(command -v sshpass)" ];
 then
   echo 'Error: sshpass is not installed.' >&2
 
-  echo 'sshpass -p $REMOTE_PWD scp $TARGET_DIR/$APP.jar $REMOTE_HOST:$REMOTE_DEPLOY_DIR'
-  sshpass -p $REMOTE_PWD scp $TARGET_DIR/$APP.jar $REMOTE_HOST:$REMOTE_DEPLOY_DIR
+ssh $REMOTE_HOST << remotessh
+  cd $REMOTE_DEPLOY_DIR
+  ./install.sh
+remotessh
 else
 sshpass -p $REMOTE_PWD ssh $REMOTE_HOST << remotessh
   cd $REMOTE_DEPLOY_DIR
