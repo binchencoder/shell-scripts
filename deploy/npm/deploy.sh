@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 NPM_BUILD_ZIP="dist.zip"
 
 # 远程服务部署目录

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 APP_NAME="knowledge-build-server"
 #POD_NAME="knowledge-build-server"
 

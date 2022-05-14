@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 APP_VERSION="1.0.0"
 APP="knowledge-build-server-$APP_VERSION"
 

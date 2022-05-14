@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 APP_NAME="knowledge-build-server"
 
 # 查看部署的服务pod name
