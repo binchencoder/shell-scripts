@@ -27,7 +27,7 @@ Time=`date +"%Y%m%d%H%M%S"`
 if [ ! -d "$TARGET_DIR" ];then
     mkdir $TARGET_DIR
 else
-    echo "$TARGET_DIR文件夹已经存在"
+    echo "$TARGET_DIR 目录已经存在"
 fi
 
 echo "[Start npm build...]"
