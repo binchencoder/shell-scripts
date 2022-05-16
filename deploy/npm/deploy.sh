@@ -3,7 +3,7 @@
 
 set -e
 
-NPM_BUILD_ZIP="dist.zip"
+NPM_BUILD_ZIP="dist.tar.gz"
 
 # 远程服务部署目录
 REMOTE_DEPLOY_DIR="/data/resources/chenbin-build"
@@ -61,13 +61,13 @@ echo "当前目录: `pwd`"
 rm -rf $TARGET_DIR/$NPM_BUILD_ZIP
 
 cd $TARGET_DIR
-echo "开始打包: zip -q -r $NPM_BUILD_ZIP *"
-zip -q -r $NPM_BUILD_ZIP *
+echo "开始打包: tar czvf $NPM_BUILD_ZIP *"
+tar czvf $NPM_BUILD_ZIP *
 echo "打包完成"
 echo ""
 
-# # 远程拷贝文件
-echo "开始拷贝文件到远程服务器($REMOTE_HOST)"
+# 远程拷贝文件
+echo "开始拷贝文件到远程服务器($REMOTE_HOST),如果未安装sshpass,需要输入宿主机密码"
 if ! [ -x "$(command -v sshpass)" ];
 then
   echo 'Error: sshpass is not installed.' >&2
@@ -81,7 +81,7 @@ fi
 
 # 登录远程机器操作命令
 echo ""
-echo "登录$REMOTE_HOST部署服务"
+echo "登录$REMOTE_HOST部署服务,如果未安装sshpass,需要再次输入宿主机密码"
 
 if ! [ -x "$(command -v sshpass)" ];
 then
@@ -90,13 +90,13 @@ then
 ssh $REMOTE_HOST << remotessh
   cd $REMOTE_DEPLOY_DIR
   ls | grep -v $NPM_BUILD_ZIP | xargs rm -rf
-  unzip $NPM_BUILD_ZIP -d .
+  tar zxvf $NPM_BUILD_ZIP
 remotessh
 else
 sshpass -p $REMOTE_PWD ssh $REMOTE_HOST << remotessh
   cd $REMOTE_DEPLOY_DIR
   ls | grep -v $NPM_BUILD_ZIP | xargs rm -rf
-  unzip $NPM_BUILD_ZIP -d .
+  tar zxvf $NPM_BUILD_ZIP
 remotessh
 fi
 
