@@ -26,8 +26,6 @@ if [[ "$1" == "-help" ]] || [[ "$1" == "-h" ]]; then
     exit 1
 fi
 
-APP_NAME="knowledge-build-server"
-
 ACTION="exec"
 if [ ! -n "$1" ]; then
     # echo "you have not input a word!"
@@ -35,6 +33,15 @@ if [ ! -n "$1" ]; then
 else
     # echo "you input: $1"
     ACTION=$1
+fi
+
+APP_NAME="knowledge-build-server"
+if [ ! -n "$2" ]; then
+    # echo "you have not input a word!"
+    echo ""
+else
+    # echo "you input: $2"
+    APP_NAME=$2
 fi
 
 # 查看部署的服务pod name
