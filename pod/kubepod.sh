@@ -49,6 +49,17 @@ fi
 POD_NAME=$(kubectl get pod -A | grep $APP_NAME | awk -F " " '{print $1 " " $2}')
 echo $POD_NAME
 
+# 查看Pods
+Pods(){
+    kubectl get pods -A
+}
+
+# 查看Svcs
+Svcs(){
+    kubectl get svc -A
+}
+
+
 # 查看日志
 Logs(){
     kubectl logs -f -n $POD_NAME
@@ -70,7 +81,11 @@ Desc(){
 }
 
 # 根据不同输入执行不同内容
-if [ "$ACTION" = "logs" ]; then
+if [ "$ACTION" = "pods" ]; then
+	Pods
+elif [ "$ACTION" = "svcs" ]; then
+    Svcs
+elif [ "$ACTION" = "logs" ]; then
     Logs
 elif [ "$ACTION" = "exec" ]; then
     Exec
