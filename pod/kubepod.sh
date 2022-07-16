@@ -10,6 +10,8 @@ set -e
 ###   ./kubepod.sh <input>
 ###
 ### Options:
+###   pods  查看Pod列表
+###   svcs  查看Svc列表
 ###   exec  进入容器(Default).
 ###   logs  查看日志.
 ###   svc   查看服务部署的端口
