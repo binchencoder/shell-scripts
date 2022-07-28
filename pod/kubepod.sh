@@ -10,8 +10,9 @@ set -e
 ###   ./kubepod.sh <input>
 ###
 ### Options:
-###   pods  查看Pod列表
-###   svcs  查看Svc列表
+###   pods      查看Pod列表
+###   svcs      查看Svc列表
+###   deploys   查看Deployment列表
 ###   exec  进入容器(Default).
 ###   logs  查看日志.
 ###   svc   查看服务部署的端口
@@ -61,6 +62,11 @@ Svcs(){
     kubectl get svc -A
 }
 
+# 查看Deployments
+Deployments(){
+    kubectl get deployments -A
+}
+
 
 # 查看日志
 Logs(){
@@ -87,6 +93,8 @@ if [ "$ACTION" = "pods" ]; then
 	Pods
 elif [ "$ACTION" = "svcs" ]; then
     Svcs
+elif [ "$ACTION" = "deploys" ]; then
+    Deployments
 elif [ "$ACTION" = "logs" ]; then
     Logs
 elif [ "$ACTION" = "exec" ]; then
