@@ -24,6 +24,14 @@ help() {
     sed -rn 's/^### ?//;T;p;' "$0"
 }
 
+Print_green() {
+    echo -e "\033[32m$1\033[0m"
+}
+
+Print_red() {
+    echo -e "\033[31m$1\033[0m"
+}
+
 if [[ "$1" == "-help" ]] || [[ "$1" == "-h" ]]; then
     help
     exit 1
@@ -70,13 +78,13 @@ Deployments(){
 
 # 查看日志
 Logs(){
-    echo "kubectl logs -f -n $1"
+    Print_green "kubectl logs -f -n $1"
     kubectl logs -f -n $1
 }
 
 # 进入容器
 Exec(){
-    echo "kubectl exec -it -n $1 /bin/bash"
+    Print_green "kubectl exec -it -n $1 /bin/bash"
     kubectl exec -it -n $1 /bin/bash
 }
 
@@ -87,7 +95,7 @@ Svc(){
 
 # 查看当前pod的状态日志
 Desc(){
-    echo "kubectl describe pod -n $1"
+    Print_green "kubectl describe pod -n $1"
     kubectl describe pod -n $1
 }
 
