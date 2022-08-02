@@ -7,7 +7,7 @@ set -e
 ### 根据不同输入, 执行kubectl命令.
 ###
 ### Usage:
-###   sh kubepod.sh [command] [podname]
+###   sh kubepod.sh [command] [appname]
 ###
 ### Options:
 ###   pods      查看Pod列表
