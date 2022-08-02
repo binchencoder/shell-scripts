@@ -7,14 +7,14 @@ set -e
 ### 根据不同输入, 执行kubectl命令.
 ###
 ### Usage:
-###   ./kubepod.sh <input>
+###   sh kubepod.sh [command] [podname]
 ###
 ### Options:
 ###   pods      查看Pod列表
 ###   svcs      查看Svc列表
 ###   deploys   查看Deployment列表
-###   exec  进入容器(Default).
-###   logs  查看日志.
+###   exec  进入容器(Default)
+###   logs  查看日志
 ###   svc   查看服务部署的端口
 ###   desc  查看当前pod的状态日志
 ###   
