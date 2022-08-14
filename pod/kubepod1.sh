@@ -7,14 +7,14 @@ set -e
 ### 根据不同输入, 执行kubectl命令.
 ###
 ### Usage:
-###   ./kubepod.sh <input>
+###   sh kubepod.sh [command] [appname]
 ###
 ### Options:
 ###   pods      查看Pod列表
 ###   svcs      查看Svc列表
 ###   deploys   查看Deployment列表
-###   exec  进入容器(Default).
-###   logs  查看日志.
+###   exec  进入容器(Default)
+###   logs  查看日志
 ###   svc   查看服务部署的端口
 ###   desc  查看当前pod的状态日志
 ###   
@@ -24,12 +24,19 @@ help() {
     sed -rn 's/^### ?//;T;p;' "$0"
 }
 
+Print_green() {
+    echo -e "\033[32m$1\033[0m"
+}
+
+Print_red() {
+    echo -e "\033[31m$1\033[0m"
+}
+
 if [[ "$1" == "-help" ]] || [[ "$1" == "-h" ]]; then
     help
     exit 1
 fi
 
-APP_NAME="knowledge-build-server"
 ACTION="exec"
 if [ ! -n "$1" ]; then
     # echo "you have not input a word!"
@@ -39,6 +46,7 @@ else
     ACTION=$1
 fi
 
+APP_NAME="knowledge-build-server"
 if [ ! -n "$2" ]; then
     # echo "you have not input a word!"
     echo ""
@@ -49,8 +57,8 @@ fi
 
 # 查看部署的服务pod name
 #kubectl get pod -A | grep $APP_NAME
-POD_NAME=$(kubectl get pod -A | grep $APP_NAME | awk -F " " '{print $1 " " $2}')
-# echo $POD_NAME
+POD_NAMES=$(kubectl get pod -A | grep $APP_NAME | awk -F " " '{print $1 "/" $2}')
+#echo $POD_NAMES
 
 # 查看Pods
 Pods(){
@@ -70,12 +78,14 @@ Deployments(){
 
 # 查看日志
 Logs(){
-    kubectl logs -f -n $POD_NAME
+    Print_green "kubectl logs -f -n $1"
+    kubectl logs -f -n $1
 }
 
 # 进入容器
 Exec(){
-    kubectl exec -it -n $POD_NAME /bin/bash
+    Print_green "kubectl exec -it -n $1 /bin/bash"
+    kubectl exec -it -n $1 /bin/bash
 }
 
 # 查看服务部署的端口
@@ -85,7 +95,27 @@ Svc(){
 
 # 查看当前pod的状态日志
 Desc(){
-    kubectl describe pod -n $POD_NAME
+    Print_green "kubectl describe pod -n $1"
+    kubectl describe pod -n $1
+}
+
+function choose {
+    pod=${POD_NAMES}
+    # 存在多个选项
+    if ( echo ${POD_NAMES} | grep -q " " )
+    then
+        select option in ${POD_NAMES}
+        do
+            if [ "${option}" = "" ]; then
+                # echo "请输入正确的选项"
+                echo ''
+            else
+                pod=${option}
+                break
+            fi
+        done
+    fi
+    echo $pod | sed 's/\// /g'
 }
 
 # 根据不同输入执行不同内容
@@ -96,13 +126,13 @@ elif [ "$ACTION" = "svcs" ]; then
 elif [ "$ACTION" = "deploys" ]; then
     Deployments
 elif [ "$ACTION" = "logs" ]; then
-    Logs
+    Logs "`choose`"
 elif [ "$ACTION" = "exec" ]; then
-    Exec
+    Exec "`choose`"
 elif [ "$ACTION" = "svc" ]; then
     Svc
 elif [ "$ACTION" = "desc" ]; then
-    Desc
+    Desc "`choose`"
 else
     echo ""
 fi

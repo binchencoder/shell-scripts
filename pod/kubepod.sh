@@ -119,20 +119,36 @@ function choose {
 }
 
 # 根据不同输入执行不同内容
-if [ "$ACTION" = "pods" ]; then
-	Pods
-elif [ "$ACTION" = "svcs" ]; then
-    Svcs
-elif [ "$ACTION" = "deploys" ]; then
-    Deployments
-elif [ "$ACTION" = "logs" ]; then
-    Logs "`choose`"
-elif [ "$ACTION" = "exec" ]; then
-    Exec "`choose`"
-elif [ "$ACTION" = "svc" ]; then
-    Svc
-elif [ "$ACTION" = "desc" ]; then
-    Desc "`choose`"
-else
-    echo ""
-fi
+case "$ACTION" in
+    pods)
+        Pods
+        ;;
+
+    svcs)
+        Svcs
+        ;;
+
+    deploys)
+        Deployments
+        ;;
+
+    logs)
+        Logs "`choose`"
+        ;;
+
+    exec)
+        Exec "`choose`"
+        ;;
+
+    svc)
+        Svc
+        ;;
+
+    desc)
+        Desc "`choose`"
+        ;;
+    *)
+        echo "Internal error"
+        exit 1
+        ;;
+esac
