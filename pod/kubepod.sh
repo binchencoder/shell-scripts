@@ -58,7 +58,7 @@ fi
 # 查看部署的服务pod name
 #kubectl get pod -A | grep $APP_NAME
 POD_NAMES=$(kubectl get pod -A | grep $APP_NAME | awk -F " " '{print $1 "/" $2}')
-echo $POD_NAMES
+#echo $POD_NAMES
 
 # 查看Pods
 Pods(){

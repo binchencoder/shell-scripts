@@ -4,10 +4,11 @@
 set -e
 
 APP_VERSION="1.0.0"
-APP="knowledge-build-server-$APP_VERSION"
+APP_NAME="knowledge-build-server"
+APP="$APP_NAME-$APP_VERSION"
 
 # 远程服务部署目录
-REMOTE_DEPLOY_DIR="/home/svn/cloudtest/bpaas/knowledge-build"
+REMOTE_DEPLOY_DIR="/home/svn/cloudtest/bpaas/knowledge-build-test"
 REMOTE_PWD="Htht@cce-dev-bpaas"
 REMOTE_HOST="root@120.46.152.174"
 
@@ -16,7 +17,7 @@ BIN_DIR=`pwd`
 cd ../../
 
 DEPLOY_DIR=`pwd`
-TARGET_DIR=$DEPLOY_DIR/knowledge-build-server/target
+TARGET_DIR=$DEPLOY_DIR/$APP_NAME/target
 
 # 定义该脚本的临时文件的名字
 TmpFileName=/tmp/sp_sh_tmp
