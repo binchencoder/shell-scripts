@@ -118,7 +118,7 @@ function choose {
     echo $pod | sed 's/\// /g'
 }
 
-# 根据不同输入执行不同内容
+# 根据不同输入执行不同操作
 if [ "$ACTION" = "pods" ]; then
 	Pods
 elif [ "$ACTION" = "svcs" ]; then
