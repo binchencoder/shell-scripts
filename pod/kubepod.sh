@@ -42,7 +42,11 @@ fi
 ACTION="exec"
 APP_NAME="knowledge-build-server"
 if [ "$#" -eq 1 ]; then
-    APP_NAME=$1
+    if [[ "$1" == "pods" ]] || [[ "$1" == "svcs" ]] || [[ "$1" == "deploys" ]]; then
+        ACTION=$1
+    else
+        APP_NAME=$1
+    fi
 else
     if [ ! -n "$1" ]; then
         # echo "you have not input a word!"
@@ -63,7 +67,7 @@ fi
 
 # 查看部署的服务pod name
 POD_NAMES=$(kubectl get pod -A | grep $APP_NAME | awk -F " " '{print $1 "," $2 "," $3 "," $4 "," $5 "," $6}')
-echo "kubectl get pod -A | grep $APP_NAME"
+# echo "kubectl get pod -A | grep $APP_NAME"
 # echo -e "$POD_NAMES \n"
 
 # 查看Pods
