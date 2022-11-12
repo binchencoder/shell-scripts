@@ -41,7 +41,7 @@ fi
 # Default action
 ACTION="exec"
 APP_NAME="knowledge-build-server"
-if [ "$#" -ne 2 ]; then
+if [ "$#" -eq 1 ]; then
     APP_NAME=$1
 else
     if [ ! -n "$1" ]; then
@@ -51,7 +51,6 @@ else
         # echo "you input: $1"
         ACTION=$1
     fi
-
 
     if [ ! -n "$2" ]; then
         # echo "you have not input a word!"
