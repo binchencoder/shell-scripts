@@ -13,10 +13,11 @@ set -e
 ###   pods      查看Pod列表
 ###   svcs      查看Svc列表
 ###   deploys   查看Deployment列表
-###   exec  进入容器(Default)
-###   logs  查看日志
-###   svc   查看服务部署的端口
-###   desc  查看当前pod的状态日志
+###   exec      进入容器(Default)
+###   logs      查看日志
+###   pod       查看pod信息
+###   svc       查看svc信息
+###   desc      查看当前pod的状态日志
 ###   
 ###   -h | -help    Show help message.
 
@@ -37,28 +38,34 @@ if [[ "$1" == "-help" ]] || [[ "$1" == "-h" ]]; then
     exit 1
 fi
 
+# Default action
 ACTION="exec"
-if [ ! -n "$1" ]; then
-    # echo "you have not input a word!"
-    echo ""
-else
-    # echo "you input: $1"
-    ACTION=$1
-fi
-
 APP_NAME="knowledge-build-server"
-if [ ! -n "$2" ]; then
-    # echo "you have not input a word!"
-    echo ""
+if [ "$#" -ne 2 ]; then
+    APP_NAME=$1
 else
-    # echo "you input: $2"
-    APP_NAME=$2
+    if [ ! -n "$1" ]; then
+        # echo "you have not input a word!"
+        echo ""
+    else
+        # echo "you input: $1"
+        ACTION=$1
+    fi
+
+
+    if [ ! -n "$2" ]; then
+        # echo "you have not input a word!"
+        echo ""
+    else
+        # echo "you input: $2"
+        APP_NAME=$2
+    fi
 fi
 
 # 查看部署的服务pod name
-#kubectl get pod -A | grep $APP_NAME
-POD_NAMES=$(kubectl get pod -A | grep $APP_NAME | awk -F " " '{print $1 "/" $2}')
-#echo $POD_NAMES
+POD_NAMES=$(kubectl get pod -A | grep $APP_NAME | awk -F " " '{print $1 "," $2 "," $3 "," $4 "," $5 "," $6}')
+echo "kubectl get pod -A | grep $APP_NAME"
+# echo -e "$POD_NAMES \n"
 
 # 查看Pods
 Pods(){
@@ -88,7 +95,12 @@ Exec(){
     kubectl exec -it -n $1 /bin/bash
 }
 
-# 查看服务部署的端口
+# 查看pod信息
+Pod(){
+    kubectl get pod -A | grep $APP_NAME
+}
+
+# 查看svc信息
 Svc(){
     kubectl get svc -A | grep $APP_NAME
 }
@@ -104,6 +116,8 @@ function choose {
     # 存在多个选项
     if ( echo ${POD_NAMES} | grep -q " " )
     then
+        # IFS=" "
+        PS3="Enjoy your choose:> "
         select option in ${POD_NAMES}
         do
             if [ "${option}" = "" ]; then
@@ -115,7 +129,8 @@ function choose {
             fi
         done
     fi
-    echo $pod | sed 's/\// /g'
+    # echo $pod | sed 's/\// /g'
+    echo $pod | awk -F "," '{print $1 " " $2}'
 }
 
 # 根据不同输入执行不同操作
@@ -138,6 +153,10 @@ case "$ACTION" in
 
     exec)
         Exec "`choose`"
+        ;;
+
+    pod)
+        Pod
         ;;
 
     svc)

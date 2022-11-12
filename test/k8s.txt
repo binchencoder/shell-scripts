@@ -1,0 +1,10 @@
+pie-engine-common             knowledge-analysis-server-645dc66f5c-jqq7r                     1/1     Running            0          23h
+pie-engine-common             knowledge-analysis-server-645dc66f5c-zq2qd                     0/1     Evicted            0          21d
+pie-engine-common             knowledge-build-5dc8877bb6-nkh66                               1/1     Running            0          68d
+pie-engine-common             knowledge-build-docsify-7ffb8b8cd8-bd5jr                       1/1     Running            0          68d
+pie-engine-common             knowledge-build-server-5544ff8588-sgggf                        1/1     Running            0          2d20h
+pie-engine-common             knowledge-build-server-test-5898597659-fqrz4                   1/1     Running            0          25h
+pie-engine-common             knowledge-build-test-6c9865d945-92bwm                          1/1     Running            0          53d
+pie-engine-common             knowledge-fusion-server-68b4556c46-qbcm8                       1/1     Running            0          21d
+pie-engine-common             knowledge-recommend-679bfbd8dc-x4tgv                           1/1     Running            0          68d
+pie-engine-common             knowledge-web-75cf766668-2nh4w                                 1/1     Running            0          68d

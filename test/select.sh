@@ -2,8 +2,8 @@
 
 APP_NAME="knowledge-build-server"
 
-POD_NAME=$(kubectl get pod -A | grep $APP_NAME | awk -F " " '{print $1 "/" $2}')
-echo $POD_NAME
+POD_NAME=$(kubectl get pod -A | grep $APP_NAME | awk -F " " '{print $1 "," $2}')
+echo "POD_NAME" $POD_NAME
 
 if ( echo ${POD_NAME} | grep -q " " )
 then
