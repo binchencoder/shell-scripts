@@ -44,7 +44,7 @@ fi
 ACTION="exec"
 APP_NAME="knowledge-build-server"
 if [ "$#" -eq 1 ]; then
-    if [[ "$1" == "pods" ]] || [[ "$1" == "svcs" ]] || [[ "$1" == "deploys" ] || [[ "$1" == "jobs" ] ]; then
+    if [[ "$1" == "pods" ]] || [[ "$1" == "svcs" ]] || [[ "$1" == "deploys" ]] || [[ "$1" == "jobs" ]]; then
         ACTION=$1
     else
         APP_NAME=$1
