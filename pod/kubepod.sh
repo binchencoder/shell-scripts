@@ -10,11 +10,13 @@ set -e
 ###   sh kubepod.sh [command] [appname]
 ###
 ### Options:
+###   jobs      查看Job列表
 ###   pods      查看Pod列表
 ###   svcs      查看Svc列表
 ###   deploys   查看Deployment列表
 ###   exec      进入容器(Default)
 ###   logs      查看日志
+###   job       查看Job信息
 ###   pod       查看pod信息
 ###   svc       查看svc信息
 ###   desc      查看当前pod的状态日志
@@ -70,21 +72,29 @@ POD_NAMES=$(kubectl get pod -A | grep $APP_NAME | awk -F " " '{print $1 "," $2 "
 # echo "kubectl get pod -A | grep $APP_NAME"
 # echo -e "$POD_NAMES \n"
 
+#查看Jobs
+Jobs(){
+    Print_green "kubectl get jobs -A"
+    kubectl get jobs -A
+}
+
 # 查看Pods
 Pods(){
+    Print_green "kubectl get pods -A"
     kubectl get pods -A
 }
 
 # 查看Svcs
 Svcs(){
+    Print_green "kubectl get svc -A"
     kubectl get svc -A
 }
 
 # 查看Deployments
 Deployments(){
+    Print_green "kubectl get deployments -A"
     kubectl get deployments -A
 }
-
 
 # 查看日志
 Logs(){
@@ -98,13 +108,21 @@ Exec(){
     kubectl exec -it -n $1 /bin/bash
 }
 
+# 查看job信息
+Job(){
+    Print_green "kubectl get job -A | grep $APP_NAME"
+    kubectl get job -A | grep $APP_NAME
+}
+
 # 查看pod信息
 Pod(){
+    Print_green "kubectl get pod -A | grep $APP_NAME"
     kubectl get pod -A | grep $APP_NAME
 }
 
 # 查看svc信息
 Svc(){
+    Print_green "kubectl get svc -A | grep $APP_NAME"
     kubectl get svc -A | grep $APP_NAME
 }
 
@@ -138,6 +156,10 @@ function choose {
 
 # 根据不同输入执行不同操作
 case "$ACTION" in
+    jobs)
+        Jobs
+        ;;
+
     pods)
         Pods
         ;;
@@ -158,18 +180,23 @@ case "$ACTION" in
         Exec "`choose`"
         ;;
 
+    job)
+       Job
+       ;;
+
     pod)
-        Pod
-        ;;
+       Pod
+       ;;
 
     svc)
-        Svc
-        ;;
+       Svc
+       ;;
 
     desc)
         Desc "`choose`"
         ;;
     *)
+
         echo "Internal error"
         exit 1
         ;;
