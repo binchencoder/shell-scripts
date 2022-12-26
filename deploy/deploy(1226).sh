@@ -2,8 +2,6 @@
 #author:chenbin
 
 set -e
-# 永不超时  set time  10  执行10秒
-set timeout -1
 
 APP_VERSION="1.0.0"
 APP_NAME="knowledge-build-server"
@@ -11,9 +9,8 @@ APP="$APP_NAME-$APP_VERSION"
 
 # 远程服务部署目录
 REMOTE_DEPLOY_DIR="/home/svn/cloudtest/bpaas/knowledge-build-test"
-REMOTE_IP="120.46.152.174"
 REMOTE_PWD="Htht@cce-dev-bpaas"
-REMOTE_USER="root"
+REMOTE_HOST="root@120.46.152.174"
 
 cd `dirname $0`
 BIN_DIR=`pwd`
@@ -50,34 +47,11 @@ else
   echo ""
 fi
 
-# 提示用户输入用户名
-read -p "输入您的登录用户名: " INPUT_USER
-if  [ ! -n "$INPUT_USER" ];
-then
-    echo "you have not input a login user!"
-else
-    echo "the login user you input is: $INPUT_USER"
-    REMOTE_USER=${INPUT_USER}
-fi
-
-# 如果本地安装了sshpass, 则提示输入密码
-if [ -x "$(command -v sshpass)" ];
-then
-  read -p "输入您的登录密码: " INPUT_PWD
-
-  if  [ -n "$INPUT_PWD" ]; then
-    echo "the login user's password you input is: $INPUT_PWD"
-    REMOTE_PWD=$INPUT_PWD
-  fi
-fi
-REMOTE_HOST="$REMOTE_USER@$REMOTE_IP"
-
-chown 777 $TARGET_DIR/$APP.jar
 # 远程拷贝文件
 echo "开始拷贝文件到远程服务器($REMOTE_HOST),如果未安装sshpass,需要输入宿主机密码"
 if ! [ -x "$(command -v sshpass)" ];
 then
-  echo 'WARN: sshpass is not installed.' >&2
+  echo 'Error: sshpass is not installed.' >&2
 
   echo "拷贝文件: scp $TARGET_DIR/$APP.jar $REMOTE_HOST:$REMOTE_DEPLOY_DIR"
   scp $TARGET_DIR/$APP.jar $REMOTE_HOST:$REMOTE_DEPLOY_DIR
@@ -92,19 +66,18 @@ echo "登录$REMOTE_HOST部署服务,如果未安装sshpass,需要再次输入�
 
 if ! [ -x "$(command -v sshpass)" ];
 then
-  echo 'WARN: sshpass is not installed.' >&2
+  echo 'Error: sshpass is not installed.' >&2
 
 ssh $REMOTE_HOST << remotessh
   cd $REMOTE_DEPLOY_DIR
-  chown -R 777 *
   ./install.sh
 remotessh
 else
 sshpass -p $REMOTE_PWD ssh $REMOTE_HOST << remotessh
   cd $REMOTE_DEPLOY_DIR
-  chown -R 777 *
   ./install.sh
 remotessh
 fi
 
 echo "部署成功!!!"
+
