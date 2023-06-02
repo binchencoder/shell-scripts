@@ -8,8 +8,8 @@ NPM_BUILD_ZIP="dist.tar.gz"
 # 远程服务部署目录
 REMOTE_DEPLOY_DIR="/data/resources/knowledge-build-test"
 REMOTE_IP="120.46.152.174"
-REMOTE_PWD="Htht@cce-dev-bpaas"
-REMOTE_USER="root"
+REMOTE_PWD=$DEPLOY_REMOTE_PWD
+REMOTE_USER=$DEPLOY_REMOTE_USER
 
 cd `dirname $0`
 BIN_DIR=`pwd`
@@ -65,25 +65,27 @@ chown 777 $NPM_BUILD_ZIP
 echo "打包完成"
 echo ""
 
+if [ -z "$REMOTE_USER" ]; then
 # 提示用户输入用户名
 read -p "输入您的登录用户名: " INPUT_USER
-if  [ ! -n "$INPUT_USER" ];
-then
+if  [ ! -n "$INPUT_USER" ]; then
     echo "you have not input a login user!"
 else
     echo "the login user you input is: $INPUT_USER"
     REMOTE_USER=${INPUT_USER}
 fi
+fi
 
+if [ -z "$REMOTE_PWD" ]; then
 # 如果本地安装了sshpass, 则提示输入密码
-if [ -x "$(command -v sshpass)" ];
-then
+if [ -x "$(command -v sshpass)" ]; then
   read -p "输入您的登录密码: " INPUT_PWD
 
   if  [ -n "$INPUT_PWD" ]; then
     echo "the login user's password you input is: $INPUT_PWD"
     REMOTE_PWD=$INPUT_PWD
   fi
+fi
 fi
 REMOTE_HOST="$REMOTE_USER@$REMOTE_IP"
 

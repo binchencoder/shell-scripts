@@ -7,8 +7,8 @@ NPM_BUILD_ZIP="dist.tar.gz"
 
 # 远程服务部署目录
 REMOTE_DEPLOY_DIR="/data/resources/chenbin-build"
-REMOTE_PWD="Htht@cce-dev-bpaas"
-REMOTE_HOST="root@120.46.152.174"
+REMOTE_PWD=$DEPLOY_REMOTE_PWD
+REMOTE_USER=$DEPLOY_REMOTE_USER
 
 cd `dirname $0`
 BIN_DIR=`pwd`
