@@ -104,8 +104,14 @@ Logs(){
 
 # 进入容器
 Exec(){
-    Print_green "kubectl exec -it -n $1 /bin/bash"
-    kubectl exec -it -n $1 /bin/bash
+    {
+        Print_green "kubectl exec -it -n $1 /bin/bash"
+        kubectl exec -it -n $1 /bin/bash
+    } ||
+    {
+        Print_green "kubectl exec -it -n $1 /bin/sh"
+        kubectl exec -it -n $1 /bin/sh
+    }
 }
 
 # 查看job信息

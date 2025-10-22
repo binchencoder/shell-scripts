@@ -2,6 +2,16 @@
 
 `kubepod.sh` 基于`kubectl` 命令封装，操作k8s的脚本，可以安全高效的访问k8s。只提供对k8s的访问命令，不提供删除的操作
 
+## 安装
+
+```shell
+chmod +x kubepod.sh
+
+mv kubepod.sh /usr/local/bin/kubepod
+```
+
+
+
 `kubepod.sh` 支持以下操作
 
 ## 查看日志
