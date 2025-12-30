@@ -98,8 +98,8 @@ Deployments(){
 
 # 查看日志
 Logs(){
-    Print_green "kubectl logs -f -n $1"
-    kubectl logs -f -n $1
+    Print_green "kubectl logs -f -n $1 $2 $3 $4 $5 $6"
+    kubectl logs -f -n $1 $2 $3 $4 $5 $6
 }
 
 # 进入容器
@@ -179,7 +179,7 @@ case "$ACTION" in
         ;;
 
     logs)
-        Logs "`choose`"
+        Logs "`choose`" $3 $4 $5 $6
         ;;
 
     exec)
